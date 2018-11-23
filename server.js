@@ -7,9 +7,15 @@ const app = new Koa();
 const router = require('./router.js')
 const logger = require('koa-logger')
 const bodyParser = require('koa-bodyparser') 
+const mongoose = require('mongoose');
 
-
+mongoose.Promise = global.Promise;
+async function  mongoStart(){
+  await  mongoose.connect('mongodb://localhost:27017/crawler');
+  console.log('openDb')
   
+}
+mongoStart()
 app.use(bodyParser());
 
 app.use(static(
