@@ -16,7 +16,6 @@ module.exports.creeperVegetables = async function({merchandise,page}){
     
     return new Promise((resove, reject) => {
         request(url + data, function (error, response, body) {
-            console.log(response)
             body = JSON.parse(body)
             resove(body)
             if(error){
