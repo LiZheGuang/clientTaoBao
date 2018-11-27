@@ -15,6 +15,8 @@ async function  mongoStart(){
   console.log('openDb')
   
 }
+
+// test
 mongoStart()
 app.use(bodyParser());
 
