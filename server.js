@@ -16,7 +16,7 @@ async function  mongoStart(){
   
 }
 
-console.log(1)
+console.log(2)
 mongoStart()
 app.use(bodyParser());
 
