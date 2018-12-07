@@ -33,21 +33,21 @@ app.use(bodyParser())
 
 
 // 错误处理
-app.use( async (ctx, next) => {
-    if (!ctx.header || !ctx.header.authorization) {
-        return await next().catch((err) => {
-            if(err.status === 401){
-                ctx.status = 401;
-                ctx.body = 'Protected resource, use Authorization header to get access\n';
-            }else{
-                throw err;
-            }
-        })
-    }else{
-        await next()
-    }
+// app.use( async (ctx, next) => {
+//     if (!ctx.header || !ctx.header.authorization) {
+//         return await next().catch((err) => {
+//             if(err.status === 401){
+//                 ctx.status = 401;
+//                 ctx.body = 'Protected resource, use Authorization header to get access\n';
+//             }else{
+//                 throw err;
+//             }
+//         })
+//     }else{
+//         await next()
+//     }
    
-})
+// })
 
 app.use(router.routes()).use(router.allowedMethods());
 
