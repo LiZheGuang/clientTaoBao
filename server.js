@@ -8,6 +8,7 @@ const logger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
 const mongoose = require('mongoose');
 
+
 mongoose.Promise = global.Promise;
 
 async function mongoStart() {
@@ -21,7 +22,6 @@ mongoStart().then(() => {
     require('./module/commodity')
     const router = require('./router.js')
     app.use(bodyParser());
-
     app.use(static(
         path.join(__dirname, './static')
     ))
@@ -29,23 +29,17 @@ mongoStart().then(() => {
         console.log(str)
     }))
     app.use(bodyParser())
-
     // 错误处理
-    // app.use( async (ctx, next) => {
-    //     if (!ctx.header || !ctx.header.authorization) {
-    //         return await next().catch((err) => {
-    //             if(err.status === 401){
-    //                 ctx.status = 401;
-    //                 ctx.body = 'Protected resource, use Authorization header to get access\n';
-    //             }else{
-    //                 throw err;
-    //             }
-    //         })
-    //     }else{
-    //         await next()
-    //     }
-
-    // })
+    app.use(function (ctx, next) {
+        return next().catch((err) => {
+            if (401 == err.status) {
+                ctx.status = 401;
+                ctx.body = 'Protected resource, use Authorization header to get access\n';
+            } else {
+                throw err;
+            }
+        });
+    });
 
     app.use(router.routes()).use(router.allowedMethods());
 }).then(() => {

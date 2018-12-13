@@ -1,21 +1,24 @@
 const KoaRouter = require('koa-router');
 const merchandise = require('../controller/merchandise')
 const shoppingReq = require('../controller/shopping')
+
+const jwt = require('koa-jwt')
+const staticConfigs = require('../staticConfigs')
+const authorization = require('../lib/authorization')
+
 let router = new KoaRouter();
 
-
-
 // 创建商品
-router.post('/creation', async (ctx, next) => {
+router.post('/creation',jwt({ secret: staticConfigs.jwtPassword }), authorization, async (ctx, next) => {
     console.log(ctx.request.body)
     ctx.body = await merchandise.creation(ctx.request.body)
 })
 // 编辑商品
-router.put('/creation', async (ctx, next) => {
+router.put('/creation',jwt({ secret: staticConfigs.jwtPassword }), authorization, async (ctx, next) => {
     ctx.body = await merchandise.putCommodity(ctx.request.body)
 })
 // 商品上下架
-router.post('/editStatus', async (ctx, next) => {
+router.post('/editStatus',jwt({ secret: staticConfigs.jwtPassword }), authorization, async (ctx, next) => {
     ctx.body = await merchandise.putCommodityStatus(ctx.request.body)
 })
 
@@ -35,7 +38,8 @@ router.get('/detail', async (ctx, next) => {
 })
 
 // 加入购物车
-router.post('/shoppingCart', async (ctx, next) => {
+router.post('/shoppingCart',jwt({ secret: staticConfigs.jwtPassword }), authorization, async (ctx, next) => {
     ctx.body = await shoppingReq.pushCart(ctx.request.body)
 })
 module.exports = router;
+

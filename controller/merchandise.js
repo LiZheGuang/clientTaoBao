@@ -8,6 +8,8 @@ const abbrCommodity = mongoose.model('abbr')
 
 const pressModel = mongoose.model('press')
 
+
+
 // 创建
 module.exports.creation = async ({ category, title, marketRprice, salePrice, promotionPrice, promotionEndTime, picture, pressId, skuData }) => {
     assert(category && title && marketRprice && salePrice && promotionPrice && promotionEndTime && picture  && skuData, 402, '缺少必要参数，请认真填写')
