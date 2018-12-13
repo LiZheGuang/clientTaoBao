@@ -87,6 +87,22 @@ module.exports.call = async ({ orderId }) => {
     }
 }
 
+// 订单详情
+module.exports.detail = async ({ orderId }) => {
+    assert(orderId, '402', '缺少订单id')
+    let orderRes = await orderModel.
+        findOne(
+            { _id: orderId },
+            { __v: 0, promotionEndTime: 0, promotionCreatTime: 0 }
+        ).populate('userId','nickName avatarUrl account ').populate('pressesId','pressName site officialUrl phone').populate('abbrId','title version picture goodsId')
+
+    return {
+        code: 200,
+        data: orderRes
+    }
+}
+
+
 class moduleComment {
     // 取消订单
     async callOrderJs(id) {

@@ -14,8 +14,15 @@ router.post('/', async (ctx, next) => {
     ctx.body = await orderReq.create(ctx.request.body)
 })
 
+// 订单详情
+router.get('/', async (ctx, next) => {
+    ctx.body = await orderReq.detail(ctx.request.query)
+})
+
 // 取消订单
 router.post('/call', async (ctx, next) => {
     ctx.body = await orderReq.call(ctx.request.body)
 })
+
+
 module.exports = router;
