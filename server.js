@@ -14,7 +14,10 @@ async function mongoStart() {
     await mongoose.connect('mongodb://localhost:27017/crawler');
 }
 mongoStart().then(() => {
-    require('./module/abbr')
+    require('./module/user')
+    require('./module/press')
+    require('./module/shoppingCart')
+    require('./module/order')
     require('./module/commodity')
     const router = require('./router.js')
     app.use(bodyParser());
@@ -45,7 +48,7 @@ mongoStart().then(() => {
     // })
 
     app.use(router.routes()).use(router.allowedMethods());
-}).then(()=>{
+}).then(() => {
     app.listen(3000)
 })
 

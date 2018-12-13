@@ -5,24 +5,25 @@ const mongoose = require('mongoose');
 const commodity = mongoose.model('merchandise')
 
 const abbrCommodity = mongoose.model('abbr')
+
+const pressModel = mongoose.model('press')
+
 // 创建
-module.exports.creation = async ({ category, title, marketRprice, salePrice, promotionPrice, promotionEndTime, picture, press, skuData }) => {
-    assert(category && title && marketRprice && salePrice && promotionPrice && promotionEndTime && picture && press && skuData, 402, '缺少必要参数，请认真填写')
+module.exports.creation = async ({ category, title, marketRprice, salePrice, promotionPrice, promotionEndTime, picture, pressId, skuData }) => {
+    assert(category && title && marketRprice && salePrice && promotionPrice && promotionEndTime && picture  && skuData, 402, '缺少必要参数，请认真填写')
     // sku商品信息存入
-    let abbrCommoditySave = new abbrCommodity({
-        repertory:skuData.repertory,
-        title:skuData.title,
-        version:skuData.version,
-        picture:[{}]
-    })
-    let abbrCommodityRes = await abbrCommoditySave.save()
-
-    let skuId = abbrCommodityRes._id
-
-    let saveData = new commodity({ category, title, marketRprice, salePrice, promotionPrice, promotionEndTime, picture, press, abbrId:skuId })
-
+    let saveData = new commodity({ category, title, marketRprice, salePrice, promotionPrice, promotionEndTime, picture })
     await saveData.save()
+    let abbrCommoditySave = new abbrCommodity({
+        repertory: skuData.repertory,
+        title: skuData.title,
+        version: skuData.version,
+        picture: skuData.picture,
+        goodsId: saveData._id
+    })
+    await abbrCommoditySave.save()
 
+    let upDat = await commodity.update({ _id: saveData._id }, { $set: {abbrId:abbrCommoditySave._id} })
     return { code: 200, msg: "商品创建成功" }
 }
 // 修改商品标题与价格 暂时只支持 修改title salePrice
@@ -73,9 +74,13 @@ module.exports.findNameCommodit = async ({ title }) => {
 // 传入id查询商品详情
 module.exports.finOneCommodit = async ({ id }) => {
     assert(id, 402, "缺少必要参数")
-    let findOnewData = await commodity.findOne({ _id: id })
+    // 关联查询
+    let findOnewData = await commodity.findOne({ _id: id }).populate('abbrId')
+    let pressId = findOnewData.pressId
+    let pressData = await  pressModel.findOne({_id:pressId})
     return {
         code: 200,
-        data: findOnewData
+        data: findOnewData,
+        pressData:pressData
     }
 }

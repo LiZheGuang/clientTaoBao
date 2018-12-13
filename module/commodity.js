@@ -27,20 +27,20 @@ let commoditySchema = new Schema({
     promotionCreatTime: {
         type: Schema.Types.Mixed,
         comment: "促销开始时间",
-        default:false
+        default: false
     },
     promotionEndTime: {
         type: Schema.Types.Mixed,
         comment: "促销截止时间",
-        default:false
+        default: false
     },
     picture: {
         type: [Schema.Types.Mixed],
         comment: '图片URL'
     },
-    press: {
+    pressId: {
         type: String,
-        comment: "出版社"
+        comment: "出版社的ID"
     },
     status: {
         type: Number,
@@ -51,11 +51,44 @@ let commoditySchema = new Schema({
         type: Date,
         default: Date.now
     },
-    abbrId: {
-        type: Schema.Types.Mixed,
-        index: true,
-        comment:"关联的SKUid"
-    }
+    abbrId: [{
+        type: Schema.ObjectId,
+        ref: 'abbr'
+    }]
+
 });
 
-mongoose.model('merchandise',commoditySchema)
+
+// 库存
+let abbrSchema = new Schema({
+    repertory: {
+        type: Number,
+        comments: "库存剩余数量",
+    },
+    title: {
+        type: String,
+        comments: "详细名称"
+    },
+    priceSpread: {
+        type: Number,
+        comments: "差价",
+        default: 0
+    },
+    version: {
+        type: Schema.Types.Mixed,
+        comments: "版本名称"
+    },
+    goodsId: {
+        type: Schema.ObjectId,
+        ref: 'merchandise'
+    },
+    picture: [{
+        url: String,
+        urlTitle: String
+    }]
+});
+
+
+mongoose.model('abbr', abbrSchema)
+
+mongoose.model('merchandise', commoditySchema)
