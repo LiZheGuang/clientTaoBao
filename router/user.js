@@ -11,4 +11,11 @@ router.post('/', async (ctx, next) => {
     ctx.body = await press.creation(ctx.request.body)
 })
 
+router.get('/',async(ctx,next)=>{
+    ctx.body = await press.findUser(ctx.request.query)
+})
+
+router.post('/loginAdmin',async(ctx,next)=>{
+    ctx.body = await press.findOneIsAdmin(ctx.request.body)
+})
 module.exports = router;

@@ -23,9 +23,18 @@ let userSchema = new Schema({
         type:String,
         comments:"收货地址"
     },
-    account:String,
+    account:{
+        type:String,
+        unique: true,
+        index:true
+    },
     password:String,
-    token:String
+    token:String,
+    isAdmin:{
+        type:Boolean,
+        default:false,
+        comments:"是否是管理员"
+    }
 });
 
 

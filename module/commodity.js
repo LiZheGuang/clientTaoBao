@@ -45,7 +45,7 @@ let commoditySchema = new Schema({
     status: {
         type: Number,
         comment: "商品状态 0未上架 1上架 ",
-        default: 1
+        default: 0
     },
     creationTime: {
         type: Date,
@@ -54,7 +54,11 @@ let commoditySchema = new Schema({
     abbrId: [{
         type: Schema.ObjectId,
         ref: 'abbr'
-    }]
+    }],
+    isShow:{
+        type:Boolean,
+        default:false
+    }
 
 });
 

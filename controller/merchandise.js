@@ -14,7 +14,7 @@ const pressModel = mongoose.model('press')
 module.exports.creation = async ({ category, title, marketRprice, salePrice, promotionPrice, promotionEndTime, picture, pressId, skuData }) => {
     assert(category && title && marketRprice && salePrice && promotionPrice && promotionEndTime && picture  && skuData, 402, '缺少必要参数，请认真填写')
     // sku商品信息存入
-    let saveData = new commodity({ category, title, marketRprice, salePrice, promotionPrice, promotionEndTime, picture })
+    let saveData = new commodity({ category, title, marketRprice, salePrice, promotionPrice, promotionEndTime, picture ,pressId})
     await saveData.save()
     let abbrCommoditySave = new abbrCommodity({
         repertory: skuData.repertory,
@@ -51,8 +51,12 @@ module.exports.putCommodityStatus = async ({ id, status }) => {
 
 // 商品查询(通过status)
 module.exports.findCommodit = async ({ status }) => {
-    assert(status, 402, 'status no ')
-    let findData = await commodity.find({ status: status })
+    // assert(status, 402, 'status no ')
+    let findQueryData = {}
+    if(status){
+        let findQueryData = { status: status}
+    }
+    let findData = await commodity.find(findQueryData).populate('abbrId')
 
     return {
         code: 200,
