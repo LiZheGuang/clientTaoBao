@@ -94,7 +94,7 @@ module.exports.detail = async ({ orderId }) => {
         findOne(
             { _id: orderId },
             { __v: 0, promotionEndTime: 0, promotionCreatTime: 0 }
-        ).populate('userId','nickName avatarUrl account ').populate('pressesId','pressName site officialUrl phone').populate('abbrId','title version picture goodsId')
+        ).populate('userId', 'nickName avatarUrl account ').populate('pressesId', 'pressName site officialUrl phone').populate('abbrId', 'title version picture goodsId')
 
     return {
         code: 200,
@@ -102,7 +102,16 @@ module.exports.detail = async ({ orderId }) => {
     }
 }
 
+// 订单列表
 
+module.exports.getList = async ({userId}) => {
+    assert(userId , '402','用户id')
+    let orderListRes = await orderModel.find({userId:userId}).populate('userId', 'nickName avatarUrl account ').populate('pressesId', 'pressName site officialUrl phone').populate('abbrId', 'title version picture goodsId')
+    return {
+        code:200,
+        orderlist:orderListRes
+    }
+}
 class moduleComment {
     // 取消订单
     async callOrderJs(id) {

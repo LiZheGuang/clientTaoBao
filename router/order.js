@@ -29,5 +29,10 @@ router.post('/call',jwt({ secret: staticConfigs.jwtPassword }), authorization, a
     ctx.body = await orderReq.call(ctx.request.body)
 })
 
+// 订单列表
+router.get('/list',jwt({ secret: staticConfigs.jwtPassword }), authorization, async (ctx, next) => {
+    ctx.body = await orderReq.getList(ctx.request.query)
+})
+
 
 module.exports = router;
