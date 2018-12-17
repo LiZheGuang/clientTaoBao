@@ -61,7 +61,7 @@ module.exports.create = async ({ abbrId, userId, orderPrice, amount }) => {
         amount: amount,
         orderTitle: orderDetail.title,
         version: orderDetail.version,
-        status: 0,
+        status: 1,
         userId: userId,
         profile: "天通苑西园一区",
         abbrId: abbrId,
@@ -112,6 +112,26 @@ module.exports.getList = async ({userId}) => {
         code:200,
         orderlist:orderListRes
     }
+}
+
+// admin后台查询订单列表
+module.exports.getAdminList = async ({userId})=>{
+    let userRes = await userModel.findOne({_id:userId})
+    let returnRes = {}
+    if(userRes.isAdmin){
+        let orderListRes = await orderModel.find().populate('userId').populate('pressesId').populate('abbrId')
+        returnRes = {
+            code:200,
+            orderlist:orderListRes
+        }
+    }else{
+        returnRes = {
+            code:202,
+            msg:"当前用户没有权限查看"
+        }
+    }
+    return returnRes
+
 }
 class moduleComment {
     // 取消订单
