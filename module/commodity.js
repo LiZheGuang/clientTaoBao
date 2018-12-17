@@ -5,12 +5,16 @@ var Schema = mongoose.Schema;
 
 let commoditySchema = new Schema({
     category: {
-        type: 'String',
+        type: String,
         comment: "商品的类型"
     }, // `test` is a path of type string
     title: {
-        type: 'String',
+        type: String,
         comment: '标题'
+    },
+    describe:{
+        type:String,
+        default:"书馆象浩瀚大海中的一艘油轮,给你充分的休息与补给;图书馆像茫茫宇宙中的空间站,有了它我们才能站住脚跟;图书馆象落满树叶的后山,一页页的书汇总在一起,才最最塌实.不会失重于知识的维度."
     },
     marketRprice: {
         type: Schema.Types.Mixed,
@@ -39,8 +43,8 @@ let commoditySchema = new Schema({
         comment: '图片URL'
     },
     pressId: {
-        type: String,
-        comment: "出版社的ID"
+        type: Schema.ObjectId,
+        ref:"press"
     },
     status: {
         type: Number,
@@ -92,6 +96,7 @@ let abbrSchema = new Schema({
     }]
 });
 
+mongoose.model('press')
 
 mongoose.model('abbr', abbrSchema)
 

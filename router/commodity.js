@@ -41,5 +41,10 @@ router.get('/detail', async (ctx, next) => {
 router.post('/shoppingCart',jwt({ secret: staticConfigs.jwtPassword }), authorization, async (ctx, next) => {
     ctx.body = await shoppingReq.pushCart(ctx.request.body)
 })
+
+// 查询某个ID下的购物车列表
+router.get('/shopping/List',async (ctx,next)=>{
+    ctx.body = await shoppingReq.findCartsList(ctx.request.query)
+})
 module.exports = router;
 

@@ -22,8 +22,8 @@ let cartSchema = new Schema({
         comments:"商品id"
     },
     abbrId:{
-        type:String,
-        comments:"种类id"
+        type:Schema.ObjectId,
+        ref:"abbr"
     },
     userId:{
         type:String,
@@ -32,4 +32,6 @@ let cartSchema = new Schema({
 });
 
 cartSchema.index({ userId: 1, abbrId: -1 ,goodsId:-1 })
+mongoose.model('abbr')
+
 mongoose.model('shoppingCart', cartSchema)

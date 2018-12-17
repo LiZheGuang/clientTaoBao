@@ -22,6 +22,7 @@ module.exports.verify = async (body) => {
 
     // 关联查询商品详细信息
     let merchanDises = await abbrsModel.findOne({ _id: abbrId }).populate('goodsId')
+    console.log(merchanDises)
     // 查询user
     let userRes = await userModel.findOne({ _id: userId }, { account: 0, password: 0, token: 0 })
     // 计算总价

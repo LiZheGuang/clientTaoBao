@@ -4,7 +4,7 @@ let router = new KoaRouter();
 
 
 
-// 创建商品
+// 创建出版社   
 router.post('/', async (ctx, next) => {
     console.log(ctx.request.body)
     // ctx.body = {code:200}

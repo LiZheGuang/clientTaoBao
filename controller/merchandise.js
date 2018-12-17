@@ -54,9 +54,9 @@ module.exports.findCommodit = async ({ status }) => {
     // assert(status, 402, 'status no ')
     let findQueryData = {}
     if(status){
-        let findQueryData = { status: status}
+        findQueryData = { status: status}
     }
-    let findData = await commodity.find(findQueryData).populate('abbrId')
+    let findData = await commodity.find(findQueryData).populate('abbrId').populate('pressId')
 
     return {
         code: 200,
@@ -81,12 +81,10 @@ module.exports.findNameCommodit = async ({ title }) => {
 module.exports.finOneCommodit = async ({ id }) => {
     assert(id, 402, "缺少必要参数")
     // 关联查询
-    let findOnewData = await commodity.findOne({ _id: id }).populate('abbrId')
-    let pressId = findOnewData.pressId
-    let pressData = await  pressModel.findOne({_id:pressId})
+    let findOnewData = await commodity.findOne({ _id: id }).populate('abbrId').populate('pressId')
+
     return {
         code: 200,
-        data: findOnewData,
-        pressData:pressData
+        data: findOnewData
     }
 }

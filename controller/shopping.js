@@ -30,3 +30,13 @@ module.exports.pushCart = async ({ abbrId, amount ,userId}) => {
     await shoppingSave.save()
     return { code: 200, data:'加入购物车成功' }
 }
+
+// 购物车列表查询
+module.exports.findCartsList = async ({userId})=>{
+    assert(userId,402,'缺少userID')
+    let cartsList = await shoppingCartModule.find({userId:userId}).populate('abbrId')
+    return {
+        code:200,
+        cartsList:cartsList
+    }
+}
